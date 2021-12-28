@@ -28,7 +28,7 @@ jobs:
   continue-after-fail:
     needs: fail-with-continue-on-error
     runs-on: ubuntu-latest
-    if: ${{ needs.fail-with-continue-on-error.outputs.outcome == "success" }}
+    if: needs.fail-with-continue-on-error.outputs.outcome == 'success'
     steps:
       - run: |
           echo job-outcome: ${{ needs.fail-with-continue-on-error.outcome }}
