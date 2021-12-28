@@ -9,12 +9,16 @@ jobs:
     continue-on-error: true
     steps:
       - run: exit 1
+        id: failing-step
       
   continue-after-fail:
     needs: fail-with-continue-on-error
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo outcome: ${{ needs.fail-with-continue-on-error.outcome }}
-          echo result:  ${{ needs.fail-with-continue-on-error.result }}
-          echo conclusion: ${{ needs.fail-with-continue-on-error.conclusion }}
+          echo job-outcome: ${{ needs.fail-with-continue-on-error.outcome }}
+          echo job-result:  ${{ needs.fail-with-continue-on-error.result }}
+          echo job-conclusion: ${{ needs.fail-with-continue-on-error.conclusion }}
+          echo step-outcome: ${{ needs.fail-with-continue-on-error.steps.failing-step.outcome }}
+          echo step-result:  ${{ needs.fail-with-continue-on-error.steps.failing-step.result }}
+          echo step-conclusion: ${{ needs.fail-with-continue-on-error.steps.failing-step.conclusion }}
