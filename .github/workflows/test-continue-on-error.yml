@@ -13,8 +13,17 @@ jobs:
       - run: exit 1
         id: failing-step
         continue-on-error: true
-      - run: echo "::set-output name=outcome::"${{ steps.failing-step.outcome }}
-        id: recover-output
+      - id: recover-output
+        run: |
+          PREVIOUS_STEP_OUTCOME=${{ steps.failing-step.outcome }}
+          echo "::set-output name=outcome::"$PREVIOUS_STEP_OUTCOME
+          if [ "$PREVIOUS_STEP_OUTCOME" = "success" ]
+          then
+            exit 0
+          else 
+            exit 1
+          fi
+        
       
   continue-after-fail:
     needs: fail-with-continue-on-error
