@@ -7,9 +7,14 @@ jobs:
   fail-with-continue-on-error:
     runs-on: ubuntu-latest
     continue-on-error: true
+    outputs:
+      outcome: ${{ steps.recover-output.outputs.outcome }}
     steps:
       - run: exit 1
         id: failing-step
+        continue-on-error: true
+      - run: echo "::set-output name=outcome::"${{ steps.failing-step.outcome }}
+        id: recover-output
       
   continue-after-fail:
     needs: fail-with-continue-on-error
@@ -19,6 +24,7 @@ jobs:
           echo job-outcome: ${{ needs.fail-with-continue-on-error.outcome }}
           echo job-result:  ${{ needs.fail-with-continue-on-error.result }}
           echo job-conclusion: ${{ needs.fail-with-continue-on-error.conclusion }}
+          echo job2-outcome: ${{ needs.fail-with-continue-on-error.outputs.outcome }}
           echo step-outcome: ${{ needs.fail-with-continue-on-error.steps.failing-step.outcome }}
           echo step-result:  ${{ needs.fail-with-continue-on-error.steps.failing-step.result }}
           echo step-conclusion: ${{ needs.fail-with-continue-on-error.steps.failing-step.conclusion }}
