@@ -1,1 +1,20 @@
-
+name: Test continue-on-error
+on:
+  workflow_dispatch:
+  
+  
+jobs:
+  fail-with-continue-on-error:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - run: exit 1
+      
+  continue-after-fail:
+    needs: fail-with-continue-on-error
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo outcome: ${{ needs.fail-with-continue-on-error.outcome }}
+          echo result:  ${{ needs.fail-with-continue-on-error.result }}
+          echo conclusion: ${{ needs.fail-with-continue-on-error.conclusion }}
