@@ -12,7 +12,7 @@ jobs:
     steps:
       - id: failing-step
         run: |
-          exit 1
+          #exit 1
           echo "Keep on running"
       - id: recover-output
         if: always()
