@@ -1,5 +1,6 @@
 name: CI
 on:
+  workflow_dispatch:
   push:
   pull_request:
   
@@ -12,21 +13,22 @@ jobs:
   release:
     needs: ci
     runs-on: ubuntu-latest
+    continue-on-error: true
     if: ${{ startsWith(github.repository, 'maybeec/') && github.ref == 'refs/heads/main' }}
     environment:
       name: production
     outputs:
-      outcome: ${{ steps.release-status.release-outcome }}
+      released: ${{ steps.release.outputs.released }}
     steps:
       - id: release
-        run: echo "Release"
-      - name: Preserve release status
-        id: release-status
-        if: always()
-        run: echo "::set-output name=release-outcome::"${{ steps.release.outcome }}
+        run: |
+          # set output to have an indicator whether the deployment was rejected or the script failed
+          echo "::set-output name=released::false"
+          exit 1
+          echo "::set-output name=released::true"      
   
   after-release:
     needs: release
     uses: maybeec/gha-test/.github/workflows/post-release-workflow.yml@main
     with:
-      SKIP: ${{ needs.ci.outputs.outcome == 'success' }}
+      SKIP: ${{ needs.release.outputs.released != 'true'}}
