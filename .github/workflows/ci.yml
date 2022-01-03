@@ -18,7 +18,7 @@ jobs:
     environment:
       name: production
     outputs:
-      released: ${{ steps.release.released }}
+      released: ${{ steps.release.outputs.released }}
     steps:
       - id: release
         run: |
