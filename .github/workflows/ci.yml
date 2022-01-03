@@ -20,7 +20,7 @@ jobs:
       outcome: ${{ steps.release-status.release-outcome }}
     steps:
       - id: release
-        run: echo "Release"
+        run: exit 1 && echo "Release"
       - name: Preserve release status
         id: release-status
         if: always()
