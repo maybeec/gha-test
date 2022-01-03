@@ -29,8 +29,10 @@ jobs:
   
   github-release:
     needs: release
-    uses: devonfw/.github/.github/workflows/create-github-release.yml@master
-    with:
-      SKIP: ${{ needs.release.outputs.released != 'true' }}
-    secrets:
-      GHA_TOKEN: ${{ secrets.GHA_TOKEN }}
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(github.repository, 'devonfw/') && github.ref == 'refs/heads/master' }}
+    steps:
+      - if: needs.release.outputs.released != 'true'
+        uses: devonfw-actions/create-github-release@main
+        with:
+          GHA_TOKEN: ${{ secrets.GHA_TOKEN }}
