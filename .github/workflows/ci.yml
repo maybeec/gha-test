@@ -2,10 +2,15 @@ name: CI
 on:
   push:
   pull_request:
-  workflow_dispatch:
   
 jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
       - run: echo "CI"
+  
+  release:
+    needs: ci
+    uses: maybeec/gha-test/.github/workflows/post-release-workflow.yml@main
+    with:
+      SKIP: ${{ needs.ci.outputs.outcome == 'success' }}
