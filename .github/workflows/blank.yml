@@ -1,0 +1,10 @@
+name: Test continue-on-error
+on:
+  workflow_dispatch:
+  
+  
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "CI"
