@@ -40,7 +40,10 @@ jobs:
     needs: release
     if: always() && (needs.release.result == 'failure') && (needs.release.outputs.released == '')
     steps:
-      - run: echo "skipped"
+      - run: |
+          echo "Result: "${{ needs.release.result }}
+          echo "Output: "${{ needs.release.outputs.released }}
+      
   
   after-release:
     needs: release
