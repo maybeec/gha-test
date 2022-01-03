@@ -24,7 +24,7 @@ jobs:
         run: |
           # set output to have an indicator whether the deployment was rejected or the script failed
           echo "::set-output name=released::false"
-          exit 1
+          #exit 1
           echo "::set-output name=released::true"      
   
   after-release:
