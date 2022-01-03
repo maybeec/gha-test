@@ -25,18 +25,7 @@ jobs:
           # set output to have an indicator whether the deployment was rejected or the script failed
           echo "::set-output name=released::false"
           exit 1
-          echo "::set-output name=released::true"
-
-  rejected-deployment:
-    runs-on: ubuntu-latest
-    needs: release
-    if: always() && (needs.release.outputs.released == '')
-    steps:
-      - run: |
-          echo "Result: "${{ needs.release.result }}
-          echo "Output: "${{ needs.release.outputs.released }}
-          echo "::warning ::Rejected Release Deployment"
-      
+          echo "::set-output name=released::true"      
   
   after-release:
     needs: release
