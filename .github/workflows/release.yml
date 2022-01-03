@@ -9,7 +9,9 @@ on:
 
 jobs:
   release:
-    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.repository.full_name == 'devonfw/cobigen'
+    #if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.repository.full_name == 'devonfw/cobigen'
     runs-on: ubuntu-latest
     steps:
-      - run: echo released
+      - run: |
+          echo ${{ github.event.workflow_run.conclusion }}
+          echo ${{ github.event.workflow_run.repository.full_name }}
