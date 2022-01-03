@@ -17,17 +17,21 @@ jobs:
     environment:
       name: production
     outputs:
-      outcome: ${{ steps.release-status.release-outcome }}
+      released: ${{ steps.release-status.released }}
     steps:
       - id: release
-        run: exit 1 && echo "Release"
-      - name: Preserve release status
+        continue-on-error: true
+        run: |
+          # set output to have an indicator whether the deployment was rejected or the script failed
+          echo "::set-output name=ran-release-script::true"
+          exit 1 && echo "Release"
+      - name: Skipped Release
+        if: failure() && steps.release.outputs.ran-release-script == true
         id: release-status
-        if: always()
-        run: echo "::set-output name=release-outcome::"${{ steps.release.outcome }}
+        run: echo "::set-output name=released::"${{ steps.release.outcome == 'success' && steps.release.outputs.ran-release-script == true }}
   
   after-release:
     needs: release
     uses: maybeec/gha-test/.github/workflows/post-release-workflow.yml@main
     with:
-      SKIP: ${{ needs.ci.outputs.outcome == 'success' }}
+      SKIP: ${{ needs.ci.outputs.released == false }}
