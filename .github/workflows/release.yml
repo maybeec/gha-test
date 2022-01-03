@@ -15,3 +15,4 @@ jobs:
       - run: |
           echo ${{ github.event.workflow_run.conclusion }}
           echo ${{ github.event.workflow_run.repository.full_name }}
+          echo ${{github.event.action}}
