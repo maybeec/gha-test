@@ -20,6 +20,7 @@ jobs:
       released: ${{ steps.release.released }}
     steps:
       - id: release
+        continue-on-error: true
         run: |
           # set output to have an indicator whether the deployment was rejected or the script failed
           echo "::set-output name=released::false"
@@ -29,6 +30,10 @@ jobs:
       #  if: failure() && steps.release.outputs.ran-release-script == true
       #  id: release-status
       #  run: echo "::set-output name=released::"${{ steps.release.outcome == 'success' && steps.release.outputs.ran-release-script == true }}
+      - name: https://github.com/actions/toolkit/issues/399
+        if: ${{ failure() }}
+        run: |
+          echo "::warning ::Failed"
   
   skipped-release:
     runs-on: ubuntu-latest
