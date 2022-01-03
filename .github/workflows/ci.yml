@@ -30,7 +30,7 @@ jobs:
   github-release:
     needs: release
     runs-on: ubuntu-latest
-    if: needs.release.outputs.released != 'true'
+    if: needs.release.outputs.released == 'true'
     steps:
       - uses: devonfw-actions/create-github-release@main
         with:
