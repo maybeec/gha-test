@@ -23,18 +23,15 @@ jobs:
       - id: release
         run: |
           # set output to have an indicator whether the deployment was rejected or the script failed
-          echo "::set-output name=released::false"
+          # https://github.community/t/boolean-evaluation-workflow-yaml/173565
+          echo "::set-output name=released::"${{ toJSON(false) }}
           exit 1
-          echo "::set-output name=released::true"
-      #- name: Skipped Release
-      #  if: failure() && steps.release.outputs.ran-release-script == true
-      #  id: release-status
-      #  run: echo "::set-output name=released::"${{ steps.release.outcome == 'success' && steps.release.outputs.ran-release-script == true }}
-  
+          echo "::set-output name=released::"${{ toJSON(true) }}
+
   rejected-deployment:
     runs-on: ubuntu-latest
     needs: release
-    if: always() && (needs.release.outputs.released == '')
+    if: always() && (fromJSON(needs.release.outputs.released))
     steps:
       - run: |
           echo "Result: "${{ needs.release.result }}
