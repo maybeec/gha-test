@@ -10,6 +10,7 @@ jobs:
       - run: echo "CI"
   
   release:
+    needs: ci
     runs-on: ubuntu-latest
     if: ${{ startsWith(github.repository, 'maybeec/') && github.ref == 'refs/heads/main' }}
     environment:
