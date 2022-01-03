@@ -20,7 +20,6 @@ jobs:
       released: ${{ steps.release.released }}
     steps:
       - id: release
-        continue-on-error: true
         run: |
           # set output to have an indicator whether the deployment was rejected or the script failed
           echo "::set-output name=released::false"
