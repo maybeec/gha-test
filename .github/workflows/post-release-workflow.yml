@@ -10,7 +10,7 @@ on:
 
 jobs:
   github-release:
-    if: inputs.SKIP == true
+    if: inputs.SKIP == false
     runs-on: ubuntu-latest
     steps:
       - run: echo "run github release"
