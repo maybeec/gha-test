@@ -27,8 +27,10 @@ jobs:
           #exit 1
           echo "::set-output name=released::true"      
   
-  after-release:
+  github-release:
     needs: release
-    uses: maybeec/gha-test/.github/workflows/post-release-workflow.yml@main
+    uses: devonfw/.github/.github/workflows/create-github-release.yml@master
     with:
-      SKIP: ${{ needs.release.outputs.released != 'true'}}
+      SKIP: ${{ needs.release.outputs.released != 'true' }}
+    secrets:
+      GHA_TOKEN: ${{ secrets.GHA_TOKEN }}
