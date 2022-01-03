@@ -10,7 +10,21 @@ jobs:
       - run: echo "CI"
   
   release:
-    needs: ci
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(github.repository, 'maybeec/') && github.ref == 'refs/heads/main' }}
+    environment:
+      name: production
+    outputs:
+      outcome: ${{ steps.release-status.release-outcome }}
+    steps:
+      - run: echo "Release"
+      - name: Preserve release status
+        id: release-status
+        if: always()
+        run: echo "::set-output name=release-outcome::"${{ steps.release.outcome }}
+  
+  after-release:
+    needs: release
     uses: maybeec/gha-test/.github/workflows/post-release-workflow.yml@main
     with:
       SKIP: ${{ needs.ci.outputs.outcome == 'success' }}
