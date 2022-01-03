@@ -30,9 +30,8 @@ jobs:
   github-release:
     needs: release
     runs-on: ubuntu-latest
-    if: ${{ startsWith(github.repository, 'devonfw/') && github.ref == 'refs/heads/master' }}
+    if: needs.release.outputs.released != 'true'
     steps:
-      - if: needs.release.outputs.released != 'true'
-        uses: devonfw-actions/create-github-release@main
+      - uses: devonfw-actions/create-github-release@main
         with:
           GHA_TOKEN: ${{ secrets.GHA_TOKEN }}
