@@ -1,0 +1,16 @@
+name: Post-Release
+
+on:
+  workflow_call:
+    inputs:
+      SKIP:
+        description: Wheather to skip the run
+        type: boolean
+        required: true
+
+jobs:
+  github-release:
+    if: inputs.SKIP == false
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "run github release"
