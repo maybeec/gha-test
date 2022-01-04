@@ -35,3 +35,4 @@ jobs:
       - uses: devonfw-actions/create-github-release@main
         with:
           GHA_TOKEN: ${{ secrets.GHA_TOKEN }}
+          release_version: 'v2021.01.001'
